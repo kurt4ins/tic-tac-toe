@@ -31,6 +31,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
+    'channels',
+    'game',
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -68,6 +72,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'tic_tac_toe_backend.wsgi.application'
+ASGI_APPLICATION = 'tic_tac_toe_backend.asgi.application'
 
 
 # Database

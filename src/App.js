@@ -2,7 +2,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Board from "./components/Board";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function App() {
@@ -10,6 +10,14 @@ function App() {
     const [player2, setPlayer2] = useState("Нолик");
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const socket = new WebSocket('ws://localhost:8000/ws/game/abc')
+
+        socket.onopen = () => console.log("Connected")
+
+        socket.onerror = (err) => console.log(err)
+
+    })
     function handleSubmit(event) {
         if (!player1 || !player2) {
             alert("Введите имя игроков");
