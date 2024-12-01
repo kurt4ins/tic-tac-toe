@@ -6,18 +6,31 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function App() {
+    const [ws, setWS] = useState(null);
     const [player1, setPlayer1] = useState("Крестик");
     const [player2, setPlayer2] = useState("Нолик");
     const navigate = useNavigate();
 
     useEffect(() => {
-        const socket = new WebSocket('ws://localhost:8000/ws/game/abc')
+        const socket = new WebSocket("ws://localhost:8000/ws/game/abc");
 
-        socket.onopen = () => console.log("Connected")
+        socket.onopen = () => {
+            console.log("Connected");
+            setWS(socket);
+        };
 
-        socket.onerror = (err) => console.log(err)
+        socket.onmessage = (event) => {
+            console.log(event);
+        }
+        socket.onerror = (err) => console.log(err);
+    }, [player1]);
 
-    })
+    function sendWS(){
+        ws.send(JSON.stringify({
+            'message': 'привет'
+        }))
+    }
+
     function handleSubmit(event) {
         if (!player1 || !player2) {
             alert("Введите имя игроков");
@@ -48,6 +61,7 @@ function App() {
                 />
                 <button type="submit"></button>
             </form>
+            <button onClick={sendWS}>Кнопка</button>
         </div>
     );
 }
