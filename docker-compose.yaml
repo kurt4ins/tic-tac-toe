@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+    postgres:
+        image: postgres:latest
+        container_name: postgres
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_PASSWORD: ttt_password
+            POSTGRES_USER: ttt_user
+            POSTGRES_DB: ttt_db
+        networks:
+            - app_network
+    ttt_backend:
+        build: ./tic_tac_toe_backend
+        ports:
+            - "8000:8000"
+        depends_on:
+            - postgres
+            - redis
+        environment:
+            - DB_HOST=postgres
+            - REDIS_HOST=redis
+        networks:
+            - app_network
+    ttt_frontend:
+        build: ./tic_tac_toe_front
+        ports:
+            - "3000:3000"
+        networks:
+            - app_network
+    redis:
+        image: redis:latest
+        ports:
+            - "6379:6379"
+        networks:
+            - app_network
+
+networks:
+    app_network:
+        driver: bridge
